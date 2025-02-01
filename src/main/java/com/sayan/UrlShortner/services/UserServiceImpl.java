@@ -3,6 +3,7 @@ package com.sayan.UrlShortner.services;
 import com.sayan.UrlShortner.dto.JwtResponseDto;
 import com.sayan.UrlShortner.dto.LoginRequest;
 import com.sayan.UrlShortner.dto.RegisterRequest;
+import com.sayan.UrlShortner.dto.UserDetailsDto;
 import com.sayan.UrlShortner.entities.CustomUserDetails;
 import com.sayan.UrlShortner.entities.Users;
 import com.sayan.UrlShortner.repositories.UserRepository;
@@ -46,5 +47,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users findByUsername(String name) {
         return userRepository.findByUsername(name);
+    }
+
+    @Override
+    public UserDetailsDto getUserDetails(String token) {
+        return new UserDetailsDto(jwtService.extractUserName(token)
+                , jwtService.extractEmail(token));
     }
 }

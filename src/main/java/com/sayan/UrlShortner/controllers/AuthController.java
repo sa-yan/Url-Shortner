@@ -27,8 +27,9 @@ public class AuthController {
 
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<?> hello(){
-        return ResponseEntity.ok("hello");
+    @GetMapping("/getDetails")
+    public ResponseEntity<?> getDetails(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.substring(7);
+        return ResponseEntity.ok(userService.getUserDetails(token));
     }
 }

@@ -32,6 +32,10 @@ public class JwtService {
         return extractClaims(token, Claims::getSubject);
     }
 
+    public String extractEmail(String token) {
+        return extractClaims(token, claims -> claims.get("email", String.class));
+    }
+
     private Claims extractClaim(String token) {
         return Jwts
                 .parser()
@@ -44,6 +48,7 @@ public class JwtService {
 
     public String generateToken(CustomUserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("email",userDetails.getEmail());
         return Jwts
                 .builder()
                 .claims()
@@ -51,7 +56,7 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .issuer("SAYAN")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 10*60*1000))
+                .expiration(new Date(System.currentTimeMillis() + 40*60*1000))
                 .and()
                 .signWith(getSignInKey())
                 .compact();
